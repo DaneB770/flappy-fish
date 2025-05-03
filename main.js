@@ -12,6 +12,8 @@ const scoreDisplay = document.getElementById('score');
 const finalScoreDisplay = document.getElementById('final-score');
 const offlineWarning = document.getElementById('offline-warning');
 const installButton = document.getElementById('install-button');
+// Hide install button by default
+if (installButton) installButton.style.display = 'none';
 
 const CANVAS_WIDTH = canvas.width;
 const CANVAS_HEIGHT = canvas.height;
@@ -262,22 +264,24 @@ window.addEventListener('offline', () => {
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredPrompt = e;
-  installButton.style.display = 'block';
+  if (installButton) installButton.style.display = 'block';
 });
 
-installButton.addEventListener('click', async () => {
-  if (deferredPrompt) {
-    deferredPrompt.prompt();
-    const choiceResult = await deferredPrompt.userChoice;
-    if (choiceResult.outcome === 'accepted') {
-      console.log('User accepted the install prompt');
-    } else {
-      console.log('User dismissed the install prompt');
+if (installButton) {
+  installButton.addEventListener('click', async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const choiceResult = await deferredPrompt.userChoice;
+      if (choiceResult.outcome === 'accepted') {
+        console.log('User accepted the install prompt');
+      } else {
+        console.log('User dismissed the install prompt');
+      }
+      deferredPrompt = null;
+      installButton.style.display = 'none';
     }
-    deferredPrompt = null;
-    installButton.style.display = 'none';
-  }
-});
+  });
+}
 
 // Start game loop
 gameLoop();
