@@ -12,8 +12,6 @@ const scoreDisplay = document.getElementById('score');
 const finalScoreDisplay = document.getElementById('final-score');
 const offlineWarning = document.getElementById('offline-warning');
 const installButton = document.getElementById('install-button');
-// Hide install button by default
-if (installButton) installButton.style.display = 'none';
 
 const CANVAS_WIDTH = canvas.width;
 const CANVAS_HEIGHT = canvas.height;
@@ -60,8 +58,28 @@ let score = 0;
 let highScore = 0;
 let gameRunning = false;
 let muted = false;
-
 let deferredPrompt = null;
+
+// Hide install button by default
+if (installButton) installButton.style.display = 'none';
+
+// Listen for the beforeinstallprompt event
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  if (installButton) installButton.style.display = 'block';
+});
+
+if (installButton) {
+  installButton.addEventListener('click', async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const choiceResult = await deferredPrompt.userChoice;
+      deferredPrompt = null;
+      installButton.style.display = 'none';
+    }
+  });
+}
 
 // Functions
 
@@ -260,33 +278,10 @@ window.addEventListener('offline', () => {
   offlineWarning.style.display = 'block';
 });
 
-// PWA install prompt
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  if (installButton) installButton.style.display = 'block';
-});
-
-if (installButton) {
-  installButton.addEventListener('click', async () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      const choiceResult = await deferredPrompt.userChoice;
-      if (choiceResult.outcome === 'accepted') {
-        console.log('User accepted the install prompt');
-      } else {
-        console.log('User dismissed the install prompt');
-      }
-      deferredPrompt = null;
-      installButton.style.display = 'none';
-    }
-  });
-}
-
 // Service Worker registration
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/hombrebueno-finalexam-fluffyfishflappy-fish/service-worker.js')
+    navigator.serviceWorker.register('service-worker.js')
       .then(reg => console.log('Service Worker registered', reg))
       .catch(err => console.log('Service Worker registration failed', err));
   });
