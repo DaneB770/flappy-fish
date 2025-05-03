@@ -4,6 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Flappy Fish Game</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#87ceeb">
 <style>
   body {
     margin: 0;
@@ -94,8 +96,7 @@
 <body>
 <div id="game-container">
   <canvas id="game-canvas" width="480" height="640"></canvas>
-  <!-- Add the Install PAWS button below the game screen -->
-  <button id="install-button" style="display:none; margin-top:16px;">Install PAWS</button>
+  <button id="install-button" style="margin-top:16px;">Install PAWS</button>
   <div id="start-screen">
     <h1>🐟 Flappy Fish 🐟</h1>
     <p>Tap the screen or press space to make the fish swim up! 🐠🐡</p>
@@ -110,7 +111,6 @@
   </div>
   <div id="mute-button" title="Mute/Unmute">🔊</div>
   <div id="score">0</div>
-  <button id="install-button">Install App ⬇️</button>
   <div id="offline-warning">⚠️ No Internet Connection</div>
 </div>
 <script src="main.js"></script>
