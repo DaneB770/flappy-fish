@@ -281,7 +281,7 @@ window.addEventListener('offline', () => {
 // Service Worker registration
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('service-worker.js')
+    navigator.serviceWorker.register('/hombrebueno-finalexam-fluffyfishflappy-fish/service-worker.js')
       .then(reg => console.log('Service Worker registered', reg))
       .catch(err => console.log('Service Worker registration failed', err));
   });
